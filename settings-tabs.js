@@ -20,6 +20,26 @@ jQuery(document).ready(function($){
 
 	})
 
+
+
+
+    $(document).on('click', '.settings-tabs .expandable .expand', function()
+    {
+        if($(this).parent().parent().hasClass('active'))
+        {
+            $(this).parent().parent().removeClass('active');
+        }
+        else
+        {
+            $(this).parent().parent().addClass('active');
+        }
+
+
+    })
+
+
+
+
 	
  		
 
