@@ -2,30 +2,44 @@
 /* CSS Document */
 
 
-#accordions_metabox {
-    background: #f1f1f1 none repeat scroll 0 0;
+/*General CSS*/
+
+.settings-tabs .float-right{
+    float: right;
+}
+
+.settings-tabs .float-left{
+    float: right;
+}
+
+.settings-tabs .float-none{
+    float: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.settings-tabs{
 
 }
 
-#accordions_metabox .inside {
-    margin: 0;
-    padding: 0;
+.settings-tabs.vertical{
+    position: relative;
 }
-
-#accordions_metabox .hndle {
-    background: #fff;
-    /* color: rgb(255, 255, 255); */
-    padding: 15px 15px;
-}
-
-
-.settings-tabs{}
-
-.settings-tabs.vertical{}
 .settings-tabs .tab-navs{
     float: left;
     margin: 0;
     padding: 0;
+    position: sticky;
+    top: 32px;
 }
 .settings-tabs .tab-nav{
     width: 200px;
@@ -123,8 +137,91 @@
 
 
 
+/*expandable*/
+
+
+.settings-tabs .expandable{}
+.settings-tabs .expandable .item {
+
+    margin: 1px 0;
+
+}
+
+
+.settings-tabs .expandable .header label{
+
+}
 
 
 
+.settings-tabs .expandable .header {
+    background: #eee none repeat scroll 0 0;
+
+}
+
+
+.settings-tabs .expandable {
+
+}
+
+.settings-tabs .expandable .options {
+    background: #bde6fc;
+    display: none;
+    padding: 10px;
+}
+
+
+
+.settings-tabs .expandable .options {
+    background:#f1f1f1;
+    display: none;
+    padding: 10px;
+}
+
+
+.settings-tabs .expandable .item.ui-sortable-helper {
+    border: 1px dashed rgb(153, 153, 153);
+}
+
+
+
+.settings-tabs .expandable .header {
+    padding: 5px;
+
+}
+
+.settings-tabs .expandable .active .options {
+
+    display: block;
+
+}
+
+.settings-tabs .item .expand .fa-expand {
+    display: inline-block;
+}
+
+.settings-tabs .item .expand .fa-compress {
+    display: none;
+}
+.settings-tabs .item.active .expand .fa-compress {
+    display: inline-block;
+}
+.settings-tabs .item.active .expand .fa-expand {
+    display: none;
+}
+
+
+
+.settings-tabs .expandable .item .move {
+    display: inline-block;
+    padding: 5px;
+    cursor: move;
+}
+
+.settings-tabs .expandable .item .expand {
+    display: inline-block;
+    padding: 5px;
+    cursor: pointer;
+}
 
 

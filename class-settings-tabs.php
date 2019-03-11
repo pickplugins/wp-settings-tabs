@@ -67,15 +67,27 @@ class settings_tabs_field{
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
         $multiple 	= isset( $option['multiple'] ) ? $option['multiple'] : false;
 
-        $value 	= isset( $option['value'] ) ? $option['value'] : array();
+
+
+
+
         $title			= isset( $option['title'] ) ? $option['title'] : "";
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
 
         if($multiple){
+            $value 	= isset( $option['value'] ) ? $option['value'] : array();
             $field_name = !empty($parent) ? $parent.'['.$id.'][]' : $id.'[]';
+            $default 	= isset( $option['default'] ) ? $option['default'] : array();
         }else{
+            $value 	= isset( $option['value'] ) ? $option['value'] : '';
             $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
+            $default 	= isset( $option['default'] ) ? $option['default'] : '';
         }
+
+
+        $value = !empty($value) ? $value : $default;
+
+
 
         ?>
         <div class="setting-field">
@@ -111,19 +123,17 @@ class settings_tabs_field{
         $args 	= isset( $option['args'] ) ? $option['args'] : array();
         $multiple 	= isset( $option['multiple'] ) ? $option['multiple'] : "";
 
-        $value 	= isset( $option['value'] ) ? $option['value'] : array();
-        $default 	= isset( $option['default'] ) ? $option['default'] : array();
-
-        $value = !empty($value) ? $value : $default;
-
         if($multiple){
+            $value 	= isset( $option['value'] ) ? $option['value'] : array();
             $field_name = !empty($parent) ? $parent.'['.$id.'][]' : $id.'[]';
+            $default 	= isset( $option['default'] ) ? $option['default'] : array();
         }else{
+            $value 	= isset( $option['value'] ) ? $option['value'] : '';
             $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
+            $default 	= isset( $option['default'] ) ? $option['default'] : '';
         }
 
-
-
+        $value = !empty($value) ? $value : $default;
 
         //$value	= get_post_meta( $post_id, $id, true );
         $title			= isset( $option['title'] ) ? $option['title'] : "";
@@ -172,6 +182,8 @@ class settings_tabs_field{
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
 
+        $value = !empty($value) ? $value : $default;
+
         $title			= isset( $option['title'] ) ? $option['title'] : "";
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
 
@@ -200,13 +212,11 @@ class settings_tabs_field{
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
 
-        $default_value	= isset( $option['default_value'] ) ? $option['default_value'] : "";
-
         $title			= isset( $option['title'] ) ? $option['title'] : "";
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
 
 
-        $option_value = empty($value) ? $default_value : $value;
+        $option_value = empty($value) ? $default : $value;
 
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
 
