@@ -23,8 +23,7 @@ jQuery(document).ready(function($){
 
 
 
-    $(document).on('click', '.settings-tabs .expandable .expand', function()
-    {
+    $(document).on('click', '.settings-tabs .expandable .expand', function(){
         if($(this).parent().parent().hasClass('active'))
         {
             $(this).parent().parent().removeClass('active');
@@ -40,6 +39,22 @@ jQuery(document).ready(function($){
 
 
 
+    $(document).on('click', '.settings-tabs .remove', function(){
+
+        var is_confirm = $(this).attr('confirm');
+
+        if(is_confirm=='yes'){
+            $(this).parent().parent().remove();
+        }
+        else{
+
+            $(this).html('<i class="fas fa-trash-alt"></i>');
+            $(this).attr('confirm','yes');
+
+        }
+
+
+    })
 	
  		
 
