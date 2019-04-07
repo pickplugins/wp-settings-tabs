@@ -11,6 +11,24 @@ if( ! class_exists( 'settings_tabs_field' ) ) {
 class settings_tabs_field{
 
 
+    function field_template(){
+
+        ob_start();
+
+        ?>
+        <div class="setting-field">
+            <div class="field-lable">%s</div>
+            <div class="field-input">%s
+                <p class="description">%s</p>
+            </div>
+        </div>
+        <?php
+
+        return ob_get_clean();
+
+    }
+
+
     function generate_field($option){
 
         $id 		= isset( $option['id'] ) ? $option['id'] : "";
@@ -66,7 +84,7 @@ class settings_tabs_field{
         $args 	= isset( $option['args'] ) ? $option['args'] : array();
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
         $multiple 	= isset( $option['multiple'] ) ? $option['multiple'] : false;
-
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
 
 
 
@@ -89,39 +107,42 @@ class settings_tabs_field{
 
 
 
+
+        ob_start();
         ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-                <select <?php if($multiple) echo 'multiple'; ?> name='<?php echo $field_name; ?>' id='<?php echo $id; ?>'>
-                    <?php
-                    foreach( $args as $key => $name ):
-                        if($multiple){
-                            $selected = in_array($key, $value) ? "selected" : "";
-                        }else{
-                            $selected = $value == $key ? "selected" : "";
-                        }
+        <select <?php if($multiple) echo 'multiple'; ?> name='<?php echo $field_name; ?>' id='<?php echo $id; ?>'>
+            <?php
+            foreach( $args as $key => $name ):
+                if($multiple){
+                    $selected = in_array($key, $value) ? "selected" : "";
+                }else{
+                    $selected = $value == $key ? "selected" : "";
+                }
 
 
-                    ?>
-                        <option <?php echo $selected; ?> value='<?php echo $key; ?>'><?php echo $name; ?></option>
-                    <?php
-                    endforeach;
-                    ?>
-                </select>
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
-
+                ?>
+                <option <?php echo $selected; ?> value='<?php echo $key; ?>'><?php echo $name; ?></option>
+            <?php
+            endforeach;
+            ?>
+        </select>
         <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
+
     }
 
     public function field_select2( $option ){
 
+        $css_id 			= isset( $option['css_id'] ) ? $option['css_id'] : "";
         $id 			= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
         $args 	= isset( $option['args'] ) ? $option['args'] : array();
         $multiple 	= isset( $option['multiple'] ) ? $option['multiple'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
 
         if($multiple){
             $value 	= isset( $option['value'] ) ? $option['value'] : array();
@@ -138,31 +159,35 @@ class settings_tabs_field{
         //$value	= get_post_meta( $post_id, $id, true );
         $title			= isset( $option['title'] ) ? $option['title'] : "";
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
+
+        ob_start();
         ?>
+        <select class="select2" <?php if($multiple) echo 'multiple'; ?>  name='<?php echo $field_name; ?>' id='<?php echo $css_id; ?>'>
+            <?php
+            foreach( $args as $key => $name ):
 
-<!--        <pre>-->
-<!--        --><?php
-//        //echo var_export($value, true);
-//        ?>
-<!--        </pre>-->
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-                <select class="select2" <?php if($multiple) echo 'multiple'; ?>  name='<?php echo $field_name; ?>' id='<?php echo $id; ?>'>
-                    <?php
-                    foreach( $args as $key => $name ):
-                        $selected = in_array($key, $value) ? "selected" : "";
-                        ?>
-                        <option <?php echo $selected; ?> value='<?php echo $key; ?>'><?php echo $name; ?></option>
-                    <?php
-                    endforeach;
-                    ?>
-                </select>
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
+                if($multiple){
+                    $selected = in_array($key, $value) ? "selected" : "";
+                }else{
+                    $selected = ($key == $value) ? "selected" : "";
+                }
 
+                ?>
+                <option <?php echo $selected; ?> value='<?php echo $key; ?>'><?php echo $name; ?></option>
+            <?php
+            endforeach;
+            ?>
+        </select>
         <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
+
+
+
+
     }
 
 
@@ -181,6 +206,8 @@ class settings_tabs_field{
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
+
 
         $value = !empty($value) ? $value : $default;
 
@@ -188,17 +215,17 @@ class settings_tabs_field{
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
 
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
+
+
+        ob_start();
         ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-                <input type='text' class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value='<?php echo $value; ?>' />
-
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
-
+        <input type='text' class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value='<?php echo $value; ?>' />
         <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
     }
 
 
@@ -211,49 +238,23 @@ class settings_tabs_field{
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
 
         $title			= isset( $option['title'] ) ? $option['title'] : "";
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
-
 
         $option_value = empty($value) ? $default : $value;
 
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
 
+
+
+
+        ob_start();
         ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-
-                <div class="text-icon">
-                    <span class="icon"><i class="<?php echo $option_value; ?>"></i></span><input type='text' class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value='<?php echo $option_value; ?>' />
-                </div>
-
-
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
+        <div class="text-icon">
+            <span class="icon"><i class="<?php echo $option_value; ?>"></i></span><input type='text' class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value='<?php echo $option_value; ?>' />
         </div>
-
-        <script>
-
-            jQuery(document).ready(function($){
-                $(document).on('keyup', '.text-icon input', function () {
-
-                    val = $(this).val();
-
-                    if(val){
-                        $(this).parent().children('.icon').html('<i class="'+val+'"></i>');
-                    }
-
-
-
-                })
-
-            })
-
-        </script>
-
-
         <style type="text/css">
             .text-icon{}
             .text-icon .icon{
@@ -267,11 +268,23 @@ class settings_tabs_field{
                 padding: 5px 10px;
                 line-height: normal;
             }
-
-
         </style>
-
+        <script>
+            jQuery(document).ready(function($){
+                $(document).on('keyup', '.text-icon input', function () {
+                    val = $(this).val();
+                    if(val){
+                        $(this).parent().children('.icon').html('<i class="'+val+'"></i>');
+                    }
+                })
+            })
+        </script>
         <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
     }
 
 
@@ -280,6 +293,7 @@ class settings_tabs_field{
 
         $id 			= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
 
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
@@ -297,20 +311,22 @@ class settings_tabs_field{
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
 
 
+        ob_start();
         ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-
-                <div class="range-input">
-                    <span class="range-value"><?php echo $value; ?></span><input type="range" min="<?php if($min) echo $min; ?>" max="<?php if($max) echo $max; ?>" step="<?php if($step) echo $step; ?>" class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' value='<?php echo $value; ?>' />
-
-                </div>
-
-
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
+        <div class="range-input">
+            <span class="range-value"><?php echo $value; ?></span><input type="range" min="<?php if($min) echo $min; ?>" max="<?php if($max) echo $max; ?>" step="<?php if($step) echo $step; ?>" class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' value='<?php echo $value; ?>' />
         </div>
+
+        <script>
+            jQuery(document).ready(function($){
+                $(document).on('change', '#<?php echo $id; ?>', function () {
+                    val = $(this).val();
+                    if(val){
+                        $(this).parent().children('.range-value').html(val);
+                    }
+                })
+            })
+        </script>
 
         <style type="text/css">
             .range-input{}
@@ -322,34 +338,10 @@ class settings_tabs_field{
                 background: #eee;
             }
         </style>
-
-        <script>
-
-            jQuery(document).ready(function($){
-
-
-                $(document).on('change', '#<?php echo $id; ?>', function () {
-
-                    val = $(this).val();
-
-                    if(val){
-                        $(this).parent().children('.range-value').html(val);
-                    }
-
-
-
-                })
-
-            })
-
-        </script>
-
-
-
-
-
-
         <?php
+
+        $input_html = ob_get_clean();
+        echo sprintf($field_template, $title, $input_html, $details);
     }
 
 
@@ -358,6 +350,7 @@ class settings_tabs_field{
 
         $id 			= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
@@ -367,16 +360,22 @@ class settings_tabs_field{
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
 
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
-        ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-                <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
 
+
+        ob_start();
+        ?>
+        <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
         <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
+
+
+
+
+
     }
 
 
@@ -385,6 +384,7 @@ class settings_tabs_field{
 
         $id 			= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
@@ -397,36 +397,25 @@ class settings_tabs_field{
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
 
 
+        ob_start();
         ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-                <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php if(!empty($value)){ echo $value; } else {echo $default_value;} ?></textarea>
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
-
-
+        <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
 
         <script>
-
-
             var editor = CodeMirror.fromTextArea(document.getElementById("<?php echo $id; ?>"), {
                 lineNumbers: true,
-                //value: "function myScript(){return 100;}\n",
-
-               // mode:  "javascript",
-                //scrollbarStyle: "simple"
             });
 
-            // var editor = CodeMirror.fromTextArea(document.getElementById("custom_css"), {
-            //     lineNumbers: true,
-            //     scrollbarStyle: "simple"
-            // });
-
         </script>
-
         <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
+
+
+
     }
 
 
@@ -434,6 +423,7 @@ class settings_tabs_field{
 
         $id 			= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
@@ -449,24 +439,35 @@ class settings_tabs_field{
         <div class="setting-field">
             <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
             <div class="field-input">
-                <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
+
                 <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
             </div>
         </div>
 
 
 
-        <script>
 
-             var editor = CodeMirror.fromTextArea(document.getElementById("<?php echo $id; ?>"), {
-                 lineNumbers: true,
-                 value: "",
-                 //scrollbarStyle: "simple"
-             });
-
-        </script>
 
         <?php
+
+        ob_start();
+        ?>
+        <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
+        <script>
+
+            var editor = CodeMirror.fromTextArea(document.getElementById("<?php echo $id; ?>"), {
+                lineNumbers: true,
+                value: "",
+                //scrollbarStyle: "simple"
+            });
+
+        </script>
+        <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
     }
 
 
@@ -479,6 +480,7 @@ class settings_tabs_field{
 
         $id				= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $title			= isset( $option['title'] ) ? $option['title'] : "";
         $details 		= isset( $option['details'] ) ? $option['details'] : "";
         $for 		= isset( $option['for'] ) ? $option['for'] : "";
@@ -491,36 +493,21 @@ class settings_tabs_field{
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
 
 
+        ob_start();
 
-
-        ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-            <?php
-
-
-
-            if(!empty($args))
+        if(!empty($args))
             foreach( $args as $key => $value ):
-
                 $checked = ( $key == $option_value ) ? "checked" : "";
-
                 $for = !empty($for) ? $for.'-'.$id."-".$key : $id."-".$key;
-
-
-               ?>
+                ?>
                 <label for='<?php echo $for;?>'><input name='<?php echo $field_name; ?>' type='radio' id='<?php echo $for; ?>' value='<?php echo $key;?>'  <?php echo $checked;?>><span><?php echo $value;?></span></label>
+
                 <?php
-
-
             endforeach;
 
-            ?>
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
-        <?php
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
 
 
     }
@@ -531,6 +518,7 @@ class settings_tabs_field{
 
         $id				= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $args			= isset( $option['args'] ) ? $option['args'] : array();
         //$args			= is_array( $args ) ? $args : $this->generate_args_from_string( $args );
         $option_value 	= isset( $option['value'] ) ? $option['value'] : '';
@@ -546,40 +534,40 @@ class settings_tabs_field{
         $option_value = empty($option_value) ? $default : $option_value;
 
 
+
+        ob_start();
         ?>
+        <div class="radio-img">
+            <?php
+            foreach( $args as $key => $value ):
 
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-
-               <div class="radio-img">
-                   <?php
-                   foreach( $args as $key => $value ):
-
-                       $name = $value['name'];
-                       $thumb = $value['thumb'];
+                $name = $value['name'];
+                $thumb = $value['thumb'];
 
 
-                       $checked = ($key == $option_value) ? "checked" : "";
+                $checked = ($key == $option_value) ? "checked" : "";
 
-                       //var_dump($checked);
+                //var_dump($checked);
 
-                       ?>
-                       <label title="<?php echo $name; ?>" class="<?php if($checked =='checked') echo 'active';?>">
-                           <input name='<?php echo $field_name; ?>' type='radio' id='<?php echo $id; ?>-<?php echo $key; ?>' value='<?php echo $key; ?>'  <?php echo $checked; ?>>
-                           <?php // echo $name; ?>
-                           <img src="<?php echo $thumb; ?>">
-                       </label>
-                   <?php
+                ?>
+                <label title="<?php echo $name; ?>" class="<?php if($checked =='checked') echo 'active';?>">
+                    <input name='<?php echo $field_name; ?>' type='radio' id='<?php echo $id; ?>-<?php echo $key; ?>' value='<?php echo $key; ?>'  <?php echo $checked; ?>>
+                    <?php // echo $name; ?>
+                    <img src="<?php echo $thumb; ?>">
+                </label>
+            <?php
 
-                   endforeach;
-                   ?>
-               </div>
-
-
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
+            endforeach;
+            ?>
         </div>
+        <script>
+            jQuery(document).ready(function($){
+                $(document).on('click', '.radio-img label', function () {
+                    $(this).parent().children('label').removeClass('active');
+                    $(this).addClass('active');
+                })
+            })
+        </script>
 
         <style type="text/css">
             .radio-img{}
@@ -604,24 +592,11 @@ class settings_tabs_field{
             }
 
         </style>
-
-        <script>
-            jQuery(document).ready(function($){
-
-
-                $(document).on('click', '.radio-img label', function () {
-
-                    $(this).parent().children('label').removeClass('active');
-
-                    $(this).addClass('active');
-
-                })
-
-            })
-        </script>
         <?php
 
+        $input_html = ob_get_clean();
 
+        echo sprintf($field_template, $title, $input_html, $details);
 
 
     }
@@ -634,6 +609,7 @@ class settings_tabs_field{
 
         $id 			= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
 
         $value 	= isset( $option['value'] ) ? $option['value'] : '';
@@ -645,20 +621,18 @@ class settings_tabs_field{
 
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
 
+
+
+
+        ob_start();
         ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-                <input name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value="<?php echo $value; ?>" />
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
+        <input name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value="<?php echo $value; ?>" />
+        <script>jQuery(document).ready(function($) { $('#<?php echo $id; ?>').wpColorPicker();});</script>
         <?php
 
+        $input_html = ob_get_clean();
 
-       // echo "<input type='text' class='' name='$id' id='$id' placeholder='$placeholder' value='$value' />";
-
-        echo "<script>jQuery(document).ready(function($) { $('#$id').wpColorPicker();});</script>";
+        echo sprintf($field_template, $title, $input_html, $details);
     }
 
 
@@ -667,24 +641,22 @@ class settings_tabs_field{
 
         $id 			= isset( $option['id'] ) ? $option['id'] : "";
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $html 	= isset( $option['html'] ) ? $option['html'] : "";
 
 
         $title			= isset( $option['title'] ) ? $option['title'] : "";
         $details 			= isset( $option['details'] ) ? $option['details'] : "";
 
-        ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
 
-                <?php echo $html; ?>
+        echo sprintf($field_template, $title, $html, $details);
 
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
 
-        <?php
+
+
+
+
+
     }
 
 
