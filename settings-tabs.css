@@ -18,6 +18,32 @@
 
 
 
+/* Collapsible */
+
+.settings-tabs .collapsible{
+    margin-bottom: 2px;
+}
+.settings-tabs .collapsible .header{
+    background: #eee;
+    padding: 8px 10px;
+}
+
+.settings-tabs .collapsible .header span{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.settings-tabs .collapsible .content{
+    display: none;
+    padding: 10px;
+    background: #f1f1f1;
+}
+
+
+.settings-tabs .collapsible.active .content{
+    display: block;
+}
+
 
 
 
@@ -147,6 +173,24 @@
 }
 .settings-tabs .setting-field .description{}
 
+
+
+
+/*field-repeatable-wrapper*/
+
+
+.ppof-settings .repeatable .item-wrap{
+    margin-bottom: 5px;
+    padding-bottom: 0px;
+}
+
+
+.field-repeatable-wrapper .field-list{
+    margin-top: 18px;
+}
+.field-repeatable-wrapper .button{
+
+}
 
 
 

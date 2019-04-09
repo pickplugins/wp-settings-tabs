@@ -57,10 +57,12 @@ class settings_tabs_field{
         elseif( isset($option['type']) && $option['type'] === 'range' ) 		$this->field_range( $option );
         elseif( isset($option['type']) && $option['type'] === 'colorpicker')    $this->field_colorpicker( $option );
         elseif( isset($option['type']) && $option['type'] === 'datepicker')	    $this->field_datepicker( $option );
-        elseif( isset($option['type']) && $option['type'] === 'repeater')	    $this->field_repeater( $option );
+        //elseif( isset($option['type']) && $option['type'] === 'repeater')	    $this->field_repeater( $option );
         elseif( isset($option['type']) && $option['type'] === 'faq')	        $this->field_faq( $option );
         elseif( isset($option['type']) && $option['type'] === 'addons_grid')	$this->field_addons_grid( $option );
         elseif( isset($option['type']) && $option['type'] === 'custom_html')	$this->field_custom_html( $option );
+        elseif( isset($option['type']) && $option['type'] === 'repeatable')	    $this->field_repeatable( $option );
+        elseif( isset($option['type']) && $option['type'] === 'media')	        $this->field_media( $option );
 
 
 
@@ -75,6 +77,269 @@ class settings_tabs_field{
 
 
     }
+
+
+
+
+    public function field_media( $option ){
+
+
+
+        $id			= isset( $option['id'] ) ? $option['id'] : "";
+        if(empty($id)) return;
+        $field_name 	= isset( $option['field_name'] ) ? $option['field_name'] : $id;
+        $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $placeholder	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
+        $title			= isset( $option['title'] ) ? $option['title'] : "";
+        $details 			= isset( $option['details'] ) ? $option['details'] : "";
+
+        $default			= isset( $option['default'] ) ? $option['default'] : '';
+        $value			= isset( $option['value'] ) ? $option['value'] : '';
+        $value          = !empty($value) ?  $value : $default;
+
+        $media_url	= wp_get_attachment_url( $value );
+        $media_type	= get_post_mime_type( $value );
+        $media_title= get_the_title( $value );
+        $media_url = !empty($media_url) ? $media_url : $placeholder;
+
+        $field_id       = $id;
+        $field_name     = !empty( $field_name ) ? $field_name : $id;
+
+
+        $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
+
+
+
+        ob_start();
+        //wp_enqueue_media();
+
+        ?>
+        <div id="field-wrapper-<?php echo $id; ?>" class="field-wrapper field-media-wrapper
+            field-media-wrapper-<?php echo $id; ?>">
+            <div class="media-preview-wrap" style="width: 150px;margin-bottom: 10px;background: #eee;padding: 5px;    text-align: center;">
+                <?php
+
+                if( "audio/mpeg" == $media_type ){
+                    ?>
+                    <div class="media-preview" class="dashicons dashicons-format-audio" style="font-size: 70px;display: inline;"></div>
+                    <div><?php echo $media_title; ?></div>
+                    <?php
+                }
+                else {
+                    ?>
+                    <img class="media-preview" src="<?php echo $media_url; ?>" style="width:100%"/>
+                    <?php
+                }
+                ?>
+            </div>
+            <input type="hidden" name="<?php echo $field_name; ?>" id="media_input_<?php echo $id; ?>" value="<?php echo $value; ?>" />
+            <div class="media-upload button" id="media_upload_<?php echo $id; ?>"><?php echo __('Upload','pickplugins-options-framework');?></div>
+            <div class="clear button" id="media_clear_<?php echo $id; ?>"><?php echo __('Clear','pickplugins-options-framework');?></div>
+            <div class="error-mgs"></div>
+        </div>
+
+        <?php
+
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
+    }
+
+
+
+
+
+
+    public function field_repeatable( $option ){
+
+        $id 			= isset( $option['id'] ) ? $option['id'] : "";
+        if(empty($id)) return;
+        $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_name 	= isset( $option['field_name'] ) ? $option['field_name'] : $id;
+        $sortable 	    = isset( $option['sortable'] ) ? $option['sortable'] : true;
+        $collapsible 	= isset( $option['collapsible'] ) ? $option['collapsible'] : true;
+        $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
+        $values			= isset( $option['value'] ) ? $option['value'] : array();
+        $fields 		= isset( $option['fields'] ) ? $option['fields'] : array();
+        $title_field 	= isset( $option['title_field'] ) ? $option['title_field'] : '';
+        $remove_text 	= isset( $option['remove_text'] ) ? $option['remove_text'] : '<i class="fas fa-times"></i>';
+        $limit 	        = isset( $option['limit'] ) ? $option['limit'] : '';
+        $field_id       = $id;
+        $field_name     = !empty( $field_name ) ? $field_name : $id;
+
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
+        $title			= isset( $option['title'] ) ? $option['title'] : "";
+        $details 			= isset( $option['details'] ) ? $option['details'] : "";
+
+        $settings_tabs_field = new settings_tabs_field();
+
+        ob_start();
+        ?>
+        <script>
+            jQuery(document).ready(function($) {
+                jQuery(document).on("click", ".field-repeatable-wrapper-<?php echo $id; ?> .collapsible .header .title-text", function() {
+                    if(jQuery(this).parent().parent().hasClass("active")){
+                        jQuery(this).parent().parent().removeClass("active");
+                    }else{
+                        jQuery(this).parent().parent().addClass("active");
+                    }
+                })
+
+                jQuery(document).on("click", ".field-repeatable-wrapper-<?php echo $id; ?> .add-item", function() {
+                    now = jQuery.now();
+                    fields_arr = <?php echo json_encode($fields); ?>;
+                    html = '<div class="item-wrap collapsible"><div class="header"><span class="button remove" ' +
+                        'onclick="jQuery(this).parent().parent().remove()"><?php echo $remove_text; ?></span> ';
+                    <?php if($sortable):?>
+                    html += '<span class="button sort" ><i class="fas fa-arrows-alt"></i></span>';
+                    <?php endif; ?>
+                    html += ' <span  class="title-text">#'+now+'</span></div>';
+
+                    <?php
+
+                    $fieldHtml = '';
+
+                        if(!empty($fields)):
+                            foreach ($fields as $field):
+
+                                $fieldType = isset($field['type']) ? $field['type'] : '';
+                                $field['parent'] = $field_name.'[TIMEINDEX]';
+
+                                ob_start();
+                                ?>
+                                <div class="item">
+                                    <?php if($collapsible):?>
+                                        <div class="content">
+                                    <?php endif; ?>
+
+                                    <?php
+                                    $settings_tabs_field->generate_field($field);
+                                    ?>
+                                    <?php if($collapsible):?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                </div>
+                                <?php
+                                $fieldHtml .= ob_get_clean();
+                            endforeach;
+                        endif;
+
+
+                    $string = str_replace("\n", "", $fieldHtml);
+                    $fieldHtml = str_replace("\r", "", $string);
+
+
+                    ?>
+
+                    fieldHtml = '<?php echo $fieldHtml; ?>';
+                    html+= fieldHtml.replace(/TIMEINDEX/g, now);
+                    html+='</div>';
+
+                    <?php
+                    if(!empty($limit)):
+                    ?>
+                    var limit = <?php  echo $limit; ?>;
+                    var node_count = $( ".field-repeatable-wrapper-<?php echo $id; ?> .field-list .item-wrap" ).size();
+                    if(limit > node_count){
+                        jQuery('.<?php echo 'field-repeatable-wrapper-'.$id; ?> .field-list').append(html);
+                    }else{
+                        jQuery('.field-repeatable-wrapper-<?php echo $id; ?> .error-mgs').html('Sorry! you can add max '+limit+' item').stop().fadeIn(400).delay(3000).fadeOut(400);
+                    }
+
+                    <?php
+                    else:
+                    ?>
+                    jQuery('.<?php echo 'field-repeatable-wrapper-'.$id; ?> .field-list').append(html);
+                    <?php
+                    endif;
+                    ?>
+                })
+                jQuery( ".field-repeatable-wrapper-<?php echo $id; ?> .field-list" ).sortable({ handle: '.sort' });
+            });
+        </script>
+        <div id="field-wrapper-<?php echo $id; ?>" class=" field-wrapper field-repeatable-wrapper
+            field-repeatable-wrapper-<?php echo $id; ?>">
+            <div class="add-item button"><?php _e('Add','pickplugins-options-framework'); ?></div>
+            <div class="field-list" id="<?php echo $id; ?>">
+                <?php
+                if(!empty($values)):
+                    $count = 1;
+                    foreach ($values as $index=>$val):
+                        $title_field_val = !empty($val[$title_field]) ? $val[$title_field] : '#'.$count;
+                        ?>
+                        <div class="item-wrap <?php if($collapsible) echo 'collapsible'; ?>">
+                            <?php if($collapsible):?>
+                            <div class="header">
+                                <?php endif; ?>
+                                <span class="button remove" onclick="jQuery(this).parent().parent().remove()"><?php echo $remove_text; ?></span>
+                                <!--                                    <span index_id="--><?php //echo $index; ?><!--" class="button clone"><i class="far fa-clone"></i></span>-->
+                                <?php if($sortable):?>
+                                    <span class="button sort"><i class="fas fa-arrows-alt"></i></span>
+                                <?php endif; ?>
+                                <span class="title-text"><?php echo $title_field_val; ?></span>
+                                <?php if($collapsible):?>
+                            </div>
+                        <?php endif; ?>
+                            <?php
+
+
+
+                            foreach ($fields as $field_index => $field):
+                                $fieldId = $field['id'];
+
+                                $title_field_class = ($title_field == $field_index) ? 'title-field':'';
+                                ?>
+                                <div class="item <?php echo $title_field_class; ?>">
+                                    <?php if($collapsible):?>
+                                    <div class="content">
+                                        <?php endif; ?>
+
+                                        <?php
+                                        $field['parent'] = $field_name.'['.$index.']';
+                                        $field['value'] = isset($val[$fieldId]) ? $val[$fieldId] : '';
+
+                                        $settings_tabs_field->generate_field($field);
+
+
+                                        if($collapsible):?>
+                                    </div>
+                                <?php endif; ?>
+                                </div>
+                            <?php
+
+                            endforeach; ?>
+                        </div>
+                        <?php
+                        $count++;
+                    endforeach;
+                else:
+                    ?>
+                <?php
+                endif;
+                ?>
+            </div>
+            <div class="error-mgs"></div>
+        </div>
+
+        <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+
+
+
+    }
+
+
+
+
+
+
 
 
     public function field_select( $option ){
@@ -110,7 +375,7 @@ class settings_tabs_field{
 
         ob_start();
         ?>
-        <select <?php if($multiple) echo 'multiple'; ?> name='<?php echo $field_name; ?>' id='<?php echo $id; ?>'>
+        <select <?php if($multiple) echo 'multiple'; ?> name="<?php echo $field_name; ?>" id="<?php echo $id; ?>">
             <?php
             foreach( $args as $key => $name ):
                 if($multiple){
@@ -121,7 +386,7 @@ class settings_tabs_field{
 
 
                 ?>
-                <option <?php echo $selected; ?> value='<?php echo $key; ?>'><?php echo $name; ?></option>
+                <option <?php echo $selected; ?> value="<?php echo $key; ?>"><?php echo $name; ?></option>
             <?php
             endforeach;
             ?>
@@ -162,7 +427,7 @@ class settings_tabs_field{
 
         ob_start();
         ?>
-        <select class="select2" <?php if($multiple) echo 'multiple'; ?>  name='<?php echo $field_name; ?>' id='<?php echo $css_id; ?>'>
+        <select class="select2" <?php if($multiple) echo 'multiple'; ?>  name="<?php echo $field_name; ?>" id="<?php echo $css_id; ?>">
             <?php
             foreach( $args as $key => $name ):
 
@@ -173,7 +438,7 @@ class settings_tabs_field{
                 }
 
                 ?>
-                <option <?php echo $selected; ?> value='<?php echo $key; ?>'><?php echo $name; ?></option>
+                <option <?php echo $selected; ?> value="<?php echo $key; ?>"><?php echo $name; ?></option>
             <?php
             endforeach;
             ?>
@@ -219,7 +484,7 @@ class settings_tabs_field{
 
         ob_start();
         ?>
-        <input type='text' class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value='<?php echo $value; ?>' />
+        <input type="text" class="" name="<?php echo $field_name; ?>" id="<?php echo $id; ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
         <?php
 
         $input_html = ob_get_clean();
@@ -253,7 +518,7 @@ class settings_tabs_field{
         ob_start();
         ?>
         <div class="text-icon">
-            <span class="icon"><i class="<?php echo $option_value; ?>"></i></span><input type='text' class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value='<?php echo $option_value; ?>' />
+            <span class="icon"><i class="<?php echo $option_value; ?>"></i></span><input type="text" class="" name="<?php echo $field_name; ?>" id="<?php echo $id; ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $option_value; ?>" />
         </div>
         <style type="text/css">
             .text-icon{}
@@ -271,10 +536,10 @@ class settings_tabs_field{
         </style>
         <script>
             jQuery(document).ready(function($){
-                $(document).on('keyup', '.text-icon input', function () {
+                $(document).on("keyup", ".text-icon input", function () {
                     val = $(this).val();
                     if(val){
-                        $(this).parent().children('.icon').html('<i class="'+val+'"></i>');
+                        $(this).parent().children(".icon").html('<i class="'+val+'"></i>');
                     }
                 })
             })
@@ -314,15 +579,15 @@ class settings_tabs_field{
         ob_start();
         ?>
         <div class="range-input">
-            <span class="range-value"><?php echo $value; ?></span><input type="range" min="<?php if($min) echo $min; ?>" max="<?php if($max) echo $max; ?>" step="<?php if($step) echo $step; ?>" class='' name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' value='<?php echo $value; ?>' />
+            <span class="range-value"><?php echo $value; ?></span><input type="range" min="<?php if($min) echo $min; ?>" max="<?php if($max) echo $max; ?>" step="<?php if($step) echo $step; ?>" class="" name="<?php echo $field_name; ?>" id="<?php echo $id; ?>" value="<?php echo $value; ?>" />
         </div>
 
         <script>
             jQuery(document).ready(function($){
-                $(document).on('change', '#<?php echo $id; ?>', function () {
+                $(document).on("change", "#<?php echo $id; ?>", function () {
                     val = $(this).val();
                     if(val){
-                        $(this).parent().children('.range-value').html(val);
+                        $(this).parent().children(".range-value").html(val);
                     }
                 })
             })
@@ -364,7 +629,7 @@ class settings_tabs_field{
 
         ob_start();
         ?>
-        <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
+        <textarea name="<?php echo $field_name; ?>" id="<?php echo $id; ?>" cols="40" rows="5" placeholder="<?php echo $placeholder; ?>"><?php echo $value; ?></textarea>
         <?php
 
         $input_html = ob_get_clean();
@@ -399,7 +664,7 @@ class settings_tabs_field{
 
         ob_start();
         ?>
-        <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
+        <textarea name="<?php echo $field_name; ?>" id="<?php echo $id; ?>" cols="40" rows="5" placeholder="<?php echo $placeholder; ?>"><?php echo $value; ?></textarea>
 
         <script>
             var editor = CodeMirror.fromTextArea(document.getElementById("<?php echo $id; ?>"), {
@@ -452,7 +717,7 @@ class settings_tabs_field{
 
         ob_start();
         ?>
-        <textarea name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' cols='40' rows='5' placeholder='<?php echo $placeholder; ?>'><?php echo $value; ?></textarea>
+        <textarea name="<?php echo $field_name; ?>" id="<?php echo $id; ?>" cols="40" rows="5" placeholder="<?php echo $placeholder; ?>"><?php echo $value; ?></textarea>
         <script>
 
             var editor = CodeMirror.fromTextArea(document.getElementById("<?php echo $id; ?>"), {
@@ -500,7 +765,7 @@ class settings_tabs_field{
                 $checked = ( $key == $option_value ) ? "checked" : "";
                 $for = !empty($for) ? $for.'-'.$id."-".$key : $id."-".$key;
                 ?>
-                <label for='<?php echo $for;?>'><input name='<?php echo $field_name; ?>' type='radio' id='<?php echo $for; ?>' value='<?php echo $key;?>'  <?php echo $checked;?>><span><?php echo $value;?></span></label>
+                <label for="<?php echo $for;?>"><input name="<?php echo $field_name; ?>" type="radio" id="<?php echo $for; ?>" value="<?php echo $key;?>"  <?php echo $checked;?>><span><?php echo $value;?></span></label>
 
                 <?php
             endforeach;
@@ -551,7 +816,7 @@ class settings_tabs_field{
 
                 ?>
                 <label title="<?php echo $name; ?>" class="<?php if($checked =='checked') echo 'active';?>">
-                    <input name='<?php echo $field_name; ?>' type='radio' id='<?php echo $id; ?>-<?php echo $key; ?>' value='<?php echo $key; ?>'  <?php echo $checked; ?>>
+                    <input name="<?php echo $field_name; ?>" type="radio" id="<?php echo $id; ?>-<?php echo $key; ?>" value="<?php echo $key; ?>"  <?php echo $checked; ?>>
                     <?php // echo $name; ?>
                     <img src="<?php echo $thumb; ?>">
                 </label>
@@ -562,9 +827,9 @@ class settings_tabs_field{
         </div>
         <script>
             jQuery(document).ready(function($){
-                $(document).on('click', '.radio-img label', function () {
-                    $(this).parent().children('label').removeClass('active');
-                    $(this).addClass('active');
+                $(document).on("click", ".radio-img label", function () {
+                    $(this).parent().children("label").removeClass("active");
+                    $(this).addClass("active");
                 })
             })
         </script>
@@ -626,8 +891,8 @@ class settings_tabs_field{
 
         ob_start();
         ?>
-        <input name='<?php echo $field_name; ?>' id='<?php echo $id; ?>' placeholder='<?php echo $placeholder; ?>' value="<?php echo $value; ?>" />
-        <script>jQuery(document).ready(function($) { $('#<?php echo $id; ?>').wpColorPicker();});</script>
+        <input name="<?php echo $field_name; ?>" id="<?php echo $id; ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
+        <script>jQuery(document).ready(function($) { $("#<?php echo $id; ?>").wpColorPicker();});</script>
         <?php
 
         $input_html = ob_get_clean();
