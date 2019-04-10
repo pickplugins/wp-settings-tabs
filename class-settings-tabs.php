@@ -159,6 +159,8 @@ class settings_tabs_field{
         if(empty($id)) return;
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
         $field_name 	= isset( $option['field_name'] ) ? $option['field_name'] : $id;
+        $field_name     = !empty( $parent ) ? $parent.'['.$field_name.']' : $field_name;
+
         $sortable 	    = isset( $option['sortable'] ) ? $option['sortable'] : true;
         $collapsible 	= isset( $option['collapsible'] ) ? $option['collapsible'] : true;
         $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
@@ -167,8 +169,8 @@ class settings_tabs_field{
         $title_field 	= isset( $option['title_field'] ) ? $option['title_field'] : '';
         $remove_text 	= isset( $option['remove_text'] ) ? $option['remove_text'] : '<i class="fas fa-times"></i>';
         $limit 	        = isset( $option['limit'] ) ? $option['limit'] : '';
-        $field_id       = $id;
-        $field_name     = !empty( $field_name ) ? $field_name : $id;
+
+
 
         $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
         $title			= isset( $option['title'] ) ? $option['title'] : "";
@@ -701,17 +703,6 @@ class settings_tabs_field{
 
         $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
         ?>
-        <div class="setting-field">
-            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
-            <div class="field-input">
-
-                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
-            </div>
-        </div>
-
-
-
-
 
         <?php
 
