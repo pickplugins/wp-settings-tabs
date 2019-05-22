@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
 
 
+    $(".sortable" ).sortable({ handle: ".sort" });
 
 	$(document).on('click','.settings-tabs .tab-nav',function(){
 
@@ -88,11 +89,89 @@ jQuery(document).ready(function($){
 
 
 
+    jQuery(document).on('click', '.input-text-multi-wrapper .add-item',function(){
+
+        dataName = $(this).attr('data-name');
+        dataSort = $(this).attr('data-sort');
+        dataClone = $(this).attr('data-clone');
+        dataPlaceholder = $(this).attr('data-placeholder');
+
+        html = '<div class="item">';
+        html += '<input  type="text" name="'+dataName+'" placeholder="'+dataPlaceholder+'" />';
+
+        if(dataClone){
+            html += ' <span class="button clone"><i class="far fa-clone"></i></span>';
+        }
+
+        if(dataSort){
+            html += ' <span class="button sort" ><i class="fas fa-arrows-alt"></i></span>';
+        }
 
 
 
 
-	
+        html += ' <span class="button remove" onclick="jQuery(this).parent().remove()"><i class="fas fa-times"></i></span>';
+        html += '</div>';
+
+
+        jQuery(this).parent().children('.field-list').append(html);
+
+
+       // $(".sortable" ).sortable({ handle: ".sort" });
+
+
+    })
+
+
+
+    jQuery(document).on("click", ".field-repeatable-wrapper .collapsible .header .title-text", function() {
+        if(jQuery(this).parent().parent().hasClass("active")){
+            jQuery(this).parent().parent().removeClass("active");
+        }else{
+            jQuery(this).parent().parent().addClass("active");
+        }
+    })
+
+
+
+    jQuery(document).on("click", ".field-repeatable-wrapper .clone", function() {
+
+
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $(document).on('click', '.expandable .expand', function()
+    {
+        if($(this).parent().parent().hasClass('active'))
+        {
+            $(this).parent().parent().removeClass('active');
+        }
+        else
+        {
+            $(this).parent().parent().addClass('active');
+        }
+
+
+    })
+
+
  		
 
 });
