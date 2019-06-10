@@ -868,6 +868,56 @@ class settings_tabs_field{
 
 
 
+    public function field_checkbox( $option ){
+
+        $id				= isset( $option['id'] ) ? $option['id'] : "";
+        $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $title			= isset( $option['title'] ) ? $option['title'] : "";
+        $details 		= isset( $option['details'] ) ? $option['details'] : "";
+        $for 		= isset( $option['for'] ) ? $option['for'] : "";
+        $args			= isset( $option['args'] ) ? $option['args'] : array();
+
+        $option_value 	= isset( $option['value'] ) ? $option['value'] : '';
+        $default 	= isset( $option['default'] ) ? $option['default'] : '';
+        $option_value = !empty($option_value) ? $option_value : $default;
+
+        $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
+
+
+
+        ?>
+        <div class="setting-field">
+            <div class="field-lable"><?php if(!empty($title)) echo $title;  ?></div>
+            <div class="field-input">
+                <?php
+
+
+
+                if(!empty($args))
+                    foreach( $args as $key => $value ):
+
+                        //$checked = ( $key == $option_value ) ? "checked" : "";
+                        $checked = in_array($key, $option_value) ? "checked" : "";
+
+                        $for = !empty($for) ? $for.'-'.$id."-".$key : $id."-".$key;
+
+
+                        ?>
+                        <label for='<?php echo $for;?>'><input name='<?php echo $field_name; ?>[]' type='checkbox' id='<?php echo $for; ?>' value='<?php echo $key;?>'  <?php echo $checked;?>><span><?php echo $value;?></span></label>
+                    <?php
+
+
+                    endforeach;
+
+                ?>
+                <p class="description"><?php if(!empty($details)) echo $details;  ?></p>
+            </div>
+        </div>
+        <?php
+
+
+    }
+
 
 
     public function field_radio( $option ){
