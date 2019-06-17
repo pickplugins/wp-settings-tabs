@@ -127,9 +127,19 @@ class settings_tabs_field{
                     <div><?php echo $media_title; ?></div>
                     <?php
                 }
-                else {
+                elseif( "images/png" == $media_type || "images/jpg" == $media_type || "images/jpeg" == $media_type ||
+                    "images/gif" == $media_type  ||
+                    "images/ico" == $media_type){
                     ?>
                     <img class="media-preview" src="<?php echo $media_url; ?>" style="width:100%"/>
+                    <div><?php echo $media_title; ?></div>
+                    <?php
+                }
+
+                else {
+                    ?>
+                    <span><?php echo wp_basename($media_type); ?></span>
+
                     <?php
                 }
                 ?>
