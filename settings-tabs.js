@@ -1,7 +1,7 @@
 jQuery(document).ready(function($){
 
 
-    $(".sortable" ).sortable({ handle: ".sort" });
+    $(".settings-tabs .sortable" ).sortable({ handle: ".sort" });
 
 	$(document).on('click','.settings-tabs .tab-nav',function(){
 
