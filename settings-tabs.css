@@ -167,11 +167,14 @@
     width: 270px;
     float: left;
     font-size: 14px;
+    word-break: break-word;
 }
 .settings-tabs .setting-field .field-input{
     margin-left: 270px;
 }
-.settings-tabs .setting-field .description{}
+.settings-tabs .setting-field .description{
+    word-break: break-word;
+}
 
 
 
@@ -204,7 +207,12 @@
 }
 
 
+@media (max-width: 1170px){
+    .settings-tabs input[type="text"], .settings-tabs textarea, .settings-tabs select, .settings-tabs input[type="range"], .settings-tabs .select2{
+        width: 100% !important;
 
+    }
+}
 
 
 @media (max-width: 1440px){
@@ -220,6 +228,21 @@
     .settings-tabs .setting-field .description{}
 
 }
+
+@media (max-width: 1700px){
+
+    .settings-tabs .setting-field .setting-field .field-lable{
+        width: auto;
+        float: none;
+        font-size: 14px;
+    }
+    .settings-tabs .setting-field .setting-field .field-input{
+        margin-left: 0px;
+    }
+
+
+}
+
 
 
 
