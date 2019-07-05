@@ -47,7 +47,7 @@ jQuery(document).ready(function($){
 
 
 
-    $(document).on('click','.media-upload',function(e){
+    $(document).on('click','.settings-tabs .media-upload',function(e){
         var side_uploader;
         this_ = $(this);
         //alert(target_input);
@@ -89,7 +89,7 @@ jQuery(document).ready(function($){
 
 
 
-    jQuery(document).on('click', '.input-text-multi-wrapper .add-item',function(){
+    jQuery(document).on('click', '.settings-tabs .input-text-multi-wrapper .add-item',function(){
 
         dataName = $(this).attr('data-name');
         dataSort = $(this).attr('data-sort');
@@ -124,7 +124,7 @@ jQuery(document).ready(function($){
 
 
 
-    jQuery(document).on("click", ".field-repeatable-wrapper .collapsible .header .title-text", function() {
+    jQuery(document).on("click", ".settings-tabs .field-repeatable-wrapper .collapsible .header .title-text", function() {
         if(jQuery(this).parent().parent().hasClass("active")){
             jQuery(this).parent().parent().removeClass("active");
         }else{
@@ -134,7 +134,7 @@ jQuery(document).ready(function($){
 
 
 
-    jQuery(document).on("click", ".field-repeatable-wrapper .clone", function() {
+    jQuery(document).on("click", ".settings-tabs .field-repeatable-wrapper .clone", function() {
 
 
 
@@ -157,7 +157,7 @@ jQuery(document).ready(function($){
 
 
 
-    $(document).on('click', '.expandable .expand', function()
+    $(document).on('click', '.settings-tabs .expandable .expand', function()
     {
         if($(this).parent().parent().hasClass('active'))
         {

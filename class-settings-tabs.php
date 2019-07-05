@@ -407,16 +407,19 @@ class settings_tabs_field{
 
     public function field_select2( $option ){
 
-        $id 			= isset( $option['id'] ) ? $option['id'] : "";
+        $id 			    = isset( $option['id'] ) ? $option['id'] : "";
         $css_id 			= isset( $option['css_id'] ) ? $option['css_id'] : $id;
         $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
-        $args 	= isset( $option['args'] ) ? $option['args'] : array();
-        $multiple 	= isset( $option['multiple'] ) ? $option['multiple'] : "";
-        $attributes 	= isset( $option['attributes'] ) ? $option['attributes'] : array();
+        $args 	            = isset( $option['args'] ) ? $option['args'] : array();
+        $multiple 	        = isset( $option['multiple'] ) ? $option['multiple'] : "";
+        $attributes 	    = isset( $option['attributes'] ) ? $option['attributes'] : array();
         $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
 
-        $is_pro 	= isset( $option['is_pro'] ) ? $option['is_pro'] : false;
-        $pro_text 	= isset( $option['pro_text'] ) ? $option['pro_text'] : '';
+        $is_pro 	        = isset( $option['is_pro'] ) ? $option['is_pro'] : false;
+        $pro_text 	        = isset( $option['pro_text'] ) ? $option['pro_text'] : '';
+
+
+        var_dump($css_id);
 
         if($multiple){
             $value 	= isset( $option['value'] ) ? $option['value'] : array();
