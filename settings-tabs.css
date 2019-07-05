@@ -200,6 +200,7 @@
 
 .settings-tabs input[type="text"], .settings-tabs textarea, .settings-tabs select, .settings-tabs input[type="range"]{
     width: 360px;
+    background: #f1f1f1;
 }
 
 
@@ -322,4 +323,12 @@
 .settings-tabs .pro-feature{
     background: #ffd87f;
     padding: 0 5px;
+}
+
+
+
+/*3rd Party*/
+
+.settings-tabs .field-input .CodeMirror{
+    background: #f1f1f1;
 }
