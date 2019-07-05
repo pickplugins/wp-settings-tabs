@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
         id = $(this).attr('data-id');
 
 		//console.log('Hello click');
-        console.log(id);
+        //console.log(id);
 
         $(this).parent().parent().children('.tab-content').removeClass('active');
 
