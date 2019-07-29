@@ -56,6 +56,8 @@ class settings_tabs_field{
         elseif( isset($option['type']) && $option['type'] === 'text_multi' ) 	$this->field_text_multi( $option );
         elseif( isset($option['type']) && $option['type'] === 'range' ) 		$this->field_range( $option );
         elseif( isset($option['type']) && $option['type'] === 'colorpicker')    $this->field_colorpicker( $option );
+        elseif( isset($option['type']) && $option['type'] === 'colorpicker_multi')    $this->field_colorpicker_multi( $option );
+
         elseif( isset($option['type']) && $option['type'] === 'datepicker')	    $this->field_datepicker( $option );
         //elseif( isset($option['type']) && $option['type'] === 'repeater')	    $this->field_repeater( $option );
         elseif( isset($option['type']) && $option['type'] === 'faq')	        $this->field_faq( $option );
@@ -1148,6 +1150,55 @@ class settings_tabs_field{
         <input name="<?php echo $field_name; ?>" id="<?php echo $css_id; ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
         <script>jQuery(document).ready(function($) { $("#<?php echo $css_id; ?>").wpColorPicker();});</script>
         <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+    }
+
+
+    public function field_colorpicker_multi( $option ){
+
+        $id 			= isset( $option['id'] ) ? $option['id'] : "";
+        $css_id 			= isset( $option['css_id'] ) ? $option['css_id'] : $id;
+        $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
+        $args 	= isset( $option['args'] ) ? $option['args'] : "";
+
+
+        $is_pro 	= isset( $option['is_pro'] ) ? $option['is_pro'] : false;
+        $pro_text 	= isset( $option['pro_text'] ) ? $option['pro_text'] : '';
+
+        $value 	= isset( $option['value'] ) ? $option['value'] : '';
+        $default 	= isset( $option['default'] ) ? $option['default'] : '';
+        $value = !empty($value) ? $value : $default;
+
+        $title			= isset( $option['title'] ) ? $option['title'] : "";
+        $details 			= isset( $option['details'] ) ? $option['details'] : "";
+
+        $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
+
+
+
+        //echo '<pre>'.var_export($args, true).'</pre>';
+
+        ob_start();
+
+        if(!empty($args)):
+
+            foreach ($args as $arg_key => $arg):
+                ?>
+                <div class="">
+                    <span><?php echo $arg_key; ?></span>
+                    <input name="<?php echo $field_name; ?>[<?php echo $arg_key; ?>]" id="<?php echo $arg_key.'-'.$css_id; ?>"  value="<?php echo $arg; ?>" />
+                    <script>jQuery(document).ready(function($) { $("#<?php echo $arg_key.'-'.$css_id; ?>").wpColorPicker();});</script>
+                </div>
+
+            <?php
+            endforeach;
+
+        endif;
+
 
         $input_html = ob_get_clean();
 
