@@ -42,29 +42,28 @@ class settings_tabs_field{
 
         if( empty( $id ) ) return;
 
-        if( isset($option['type']) && $option['type'] === 'select' ) 		    $this->field_select( $option );
-        elseif( isset($option['type']) && $option['type'] === 'select2')	    $this->field_select2( $option );
-        elseif( isset($option['type']) && $option['type'] === 'checkbox')	    $this->field_checkbox( $option );
-        elseif( isset($option['type']) && $option['type'] === 'radio')		    $this->field_radio( $option );
-        elseif( isset($option['type']) && $option['type'] === 'radio_image')	$this->field_radio_image( $option );
-        elseif( isset($option['type']) && $option['type'] === 'textarea')	    $this->field_textarea( $option );
-        elseif( isset($option['type']) && $option['type'] === 'scripts_js')	    $this->field_scripts_js( $option );
-        elseif( isset($option['type']) && $option['type'] === 'scripts_css')	$this->field_scripts_css( $option );
-        elseif( isset($option['type']) && $option['type'] === 'number' ) 	    $this->field_number( $option );
-        elseif( isset($option['type']) && $option['type'] === 'text' ) 		    $this->field_text( $option );
-        elseif( isset($option['type']) && $option['type'] === 'text_icon' )     $this->field_text_icon( $option );
-        elseif( isset($option['type']) && $option['type'] === 'text_multi' ) 	$this->field_text_multi( $option );
-        elseif( isset($option['type']) && $option['type'] === 'range' ) 		$this->field_range( $option );
-        elseif( isset($option['type']) && $option['type'] === 'colorpicker')    $this->field_colorpicker( $option );
-        elseif( isset($option['type']) && $option['type'] === 'colorpicker_multi')    $this->field_colorpicker_multi( $option );
+        if( isset($option['type']) && $option['type'] === 'select' ) 		        $this->field_select( $option );
+        elseif( isset($option['type']) && $option['type'] === 'select2')	        $this->field_select2( $option );
+        elseif( isset($option['type']) && $option['type'] === 'checkbox')	        $this->field_checkbox( $option );
+        elseif( isset($option['type']) && $option['type'] === 'radio')		        $this->field_radio( $option );
+        elseif( isset($option['type']) && $option['type'] === 'radio_image')	    $this->field_radio_image( $option );
+        elseif( isset($option['type']) && $option['type'] === 'textarea')	        $this->field_textarea( $option );
+        elseif( isset($option['type']) && $option['type'] === 'scripts_js')	        $this->field_scripts_js( $option );
+        elseif( isset($option['type']) && $option['type'] === 'scripts_css')	    $this->field_scripts_css( $option );
+        elseif( isset($option['type']) && $option['type'] === 'number' ) 	        $this->field_number( $option );
+        elseif( isset($option['type']) && $option['type'] === 'text' ) 		        $this->field_text( $option );
+        elseif( isset($option['type']) && $option['type'] === 'text_icon' )         $this->field_text_icon( $option );
+        elseif( isset($option['type']) && $option['type'] === 'text_multi' ) 	    $this->field_text_multi( $option );
+        elseif( isset($option['type']) && $option['type'] === 'range' ) 		    $this->field_range( $option );
+        elseif( isset($option['type']) && $option['type'] === 'colorpicker')        $this->field_colorpicker( $option );
+        elseif( isset($option['type']) && $option['type'] === 'colorpicker_multi')  $this->field_colorpicker_multi( $option );
 
-        elseif( isset($option['type']) && $option['type'] === 'datepicker')	    $this->field_datepicker( $option );
-        //elseif( isset($option['type']) && $option['type'] === 'repeater')	    $this->field_repeater( $option );
-        elseif( isset($option['type']) && $option['type'] === 'faq')	        $this->field_faq( $option );
-        elseif( isset($option['type']) && $option['type'] === 'addons_grid')	$this->field_addons_grid( $option );
-        elseif( isset($option['type']) && $option['type'] === 'custom_html')	$this->field_custom_html( $option );
-        elseif( isset($option['type']) && $option['type'] === 'repeatable')	    $this->field_repeatable( $option );
-        elseif( isset($option['type']) && $option['type'] === 'media')	        $this->field_media( $option );
+        elseif( isset($option['type']) && $option['type'] === 'datepicker')	        $this->field_datepicker( $option );
+        elseif( isset($option['type']) && $option['type'] === 'faq')	            $this->field_faq( $option );
+        elseif( isset($option['type']) && $option['type'] === 'addons_grid')	    $this->field_addons_grid( $option );
+        elseif( isset($option['type']) && $option['type'] === 'custom_html')	    $this->field_custom_html( $option );
+        elseif( isset($option['type']) && $option['type'] === 'repeatable')	        $this->field_repeatable( $option );
+        elseif( isset($option['type']) && $option['type'] === 'media')	            $this->field_media( $option );
 
 
 
@@ -1118,7 +1117,41 @@ class settings_tabs_field{
 
     }
 
+    public function field_datepicker( $option ){
 
+        $id 			= isset( $option['id'] ) ? $option['id'] : "";
+        $css_id 			= isset( $option['css_id'] ) ? $option['css_id'] : $id;
+        $parent 			= isset( $option['parent'] ) ? $option['parent'] : "";
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
+        $placeholder 	= isset( $option['placeholder'] ) ? $option['placeholder'] : "";
+        $format 	= isset( $option['format'] ) ? $option['format'] : "";
+
+        $is_pro 	= isset( $option['is_pro'] ) ? $option['is_pro'] : false;
+        $pro_text 	= isset( $option['pro_text'] ) ? $option['pro_text'] : '';
+
+        $value 	= isset( $option['value'] ) ? $option['value'] : '';
+        $default 	= isset( $option['default'] ) ? $option['default'] : '';
+        $value = !empty($value) ? $value : $default;
+
+        $title			= isset( $option['title'] ) ? $option['title'] : "";
+        $details 			= isset( $option['details'] ) ? $option['details'] : "";
+
+        $field_name = !empty($parent) ? $parent.'['.$id.']' : $id;
+
+
+        wp_enqueue_script('jquery-ui-datepicker');
+        wp_enqueue_style( 'jquery-ui');
+
+        ob_start();
+        ?>
+        <input type="text" autocomplete="off"  name="<?php echo $field_name; ?>" id="<?php echo $css_id; ?>" placeholder="<?php echo $placeholder; ?>" value="<?php echo $value; ?>" />
+        <script>jQuery(document).ready(function($) { $("#<?php echo $css_id; ?>").datepicker({ dateFormat: "<?php echo $format; ?>" });});</script>
+        <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $details);
+    }
 
 
 
