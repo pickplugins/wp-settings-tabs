@@ -105,6 +105,7 @@
     float: right;
     padding: 15px;
     border-left: 1px solid #ddd;
+    background: #fff;
 }
 
 .settings-tabs-right-panel .right-panel-content{
