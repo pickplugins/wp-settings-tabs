@@ -969,6 +969,10 @@ class settings_tabs_field{
         $for 		= isset( $option['for'] ) ? $option['for'] : "";
         $args			= isset( $option['args'] ) ? $option['args'] : array();
 
+        $style			= isset( $option['style'] ) ? $option['style'] : array();
+        $style_inline			= isset( $style['inline'] ) ? $style['inline'] : true;
+
+
         $option_value 	= isset( $option['value'] ) ? $option['value'] : '';
         $default 	= isset( $option['default'] ) ? $option['default'] : '';
         $option_value = !empty($option_value) ? $option_value : $default;
@@ -988,6 +992,7 @@ class settings_tabs_field{
                 if(!empty($args))
                     foreach( $args as $key => $value ):
 
+
                         //$checked = ( $key == $option_value ) ? "checked" : "";
                         $checked = in_array($key, $option_value) ? "checked" : "";
 
@@ -996,8 +1001,14 @@ class settings_tabs_field{
 
                         ?>
                         <label for='<?php echo $for;?>'><input name='<?php echo $field_name; ?>[]' type='checkbox' id='<?php echo $for; ?>' value='<?php echo $key;?>'  <?php echo $checked;?>><span><?php echo $value;?></span></label>
-                    <?php
 
+                        <?php
+
+                        if(!$style_inline){
+                            ?>
+                            <br>
+                            <?php
+                        }
 
                     endforeach;
 
