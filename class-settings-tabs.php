@@ -66,6 +66,8 @@ class settings_tabs_field{
         elseif( isset($option['type']) && $option['type'] === 'media')	            $this->field_media( $option );
         elseif( isset($option['type']) && $option['type'] === 'media_url')	        $this->field_media_url( $option );
 
+        elseif( isset($option['type']) && $option['type'] === 'option_group')	    $this->field_option_group( $option );
+        elseif( isset($option['type']) && $option['type'] === 'option_group_accordion')	    $this->field_option_group_accordion( $option );
 
 
 
@@ -81,6 +83,166 @@ class settings_tabs_field{
     }
 
 
+    public function field_option_group_accordion( $option ){
+
+        $id 			= isset( $option['id'] ) ? $option['id'] : "";
+        $css_id 			= isset( $option['css_id'] ) ? $option['css_id'] : $id;
+        $args 	= isset( $option['args'] ) ? $option['args'] : array();
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
+
+        $is_pro 	= isset( $option['is_pro'] ) ? $option['is_pro'] : false;
+        $pro_text 	= isset( $option['pro_text'] ) ? $option['pro_text'] : '';
+
+
+        $title			= isset( $option['title'] ) ? $option['title'] : "";
+        $group_details 			= isset( $option['details'] ) ? $option['details'] : "";
+
+        if($is_pro == true){
+            $group_details = '<span class="pro-feature">'.$pro_text.'</span> '.$group_details;
+        }
+
+
+        ob_start();
+        ?>
+        <div class="option-group-accordion-wrap" id="<?php echo $css_id; ?>">
+            <div class='option-group-accordion accordion'>
+                <?php
+                foreach( $args as $key => $value ):
+                    $group_title = isset($value['title']) ? $value['title'] : '';
+                    //$link = $value['link'];
+                    $options = isset($value['options']) ? $value['options'] : array();
+
+                    ?>
+                    <div class="group">
+                        <h3 class="accordion-title">
+                            <span class="sort"><i class="fas fa-sort"></i></span>
+                            <span class="title-text"><?php echo $group_title; ?></span>
+                        </h3>
+                        <div class="accordion-content">
+
+                            <?php
+
+                            if(!empty($options)):
+                                foreach ($options as $option):
+
+                                    $id 		= isset( $option['id'] ) ? $option['id'] : "";
+                                    $type 		= isset( $option['type'] ) ? $option['type'] : "";
+                                    $details 	= isset( $option['details'] ) ? $option['details'] : "";
+
+                                    if( isset($option['type']) && $option['type'] === 'select' ) 		        $this->field_select( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'select2')	        $this->field_select2( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'checkbox')	        $this->field_checkbox( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'radio')		        $this->field_radio( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'radio_image')	    $this->field_radio_image( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'textarea')	        $this->field_textarea( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'scripts_js')	        $this->field_scripts_js( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'scripts_css')	    $this->field_scripts_css( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'number' ) 	        $this->field_number( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'text' ) 		        $this->field_text( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'text_icon' )         $this->field_text_icon( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'text_multi' ) 	    $this->field_text_multi( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'range' ) 		    $this->field_range( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'colorpicker')        $this->field_colorpicker( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'colorpicker_multi')  $this->field_colorpicker_multi( $option );
+
+                                    elseif( isset($option['type']) && $option['type'] === 'datepicker')	        $this->field_datepicker( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'faq')	            $this->field_faq( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'addons_grid')	    $this->field_addons_grid( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'custom_html')	    $this->field_custom_html( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'repeatable')	        $this->field_repeatable( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'media')	            $this->field_media( $option );
+                                    elseif( isset($option['type']) && $option['type'] === 'media_url')	        $this->field_media_url( $option );
+
+                                endforeach;
+                            endif;
+                            ?>
+                        </div> <!-- ..accordion-content -->
+                    </div><!-- .group -->
+
+
+                <?php
+                endforeach;
+                ?>
+            </div> <!-- .option-group-accordion -->
+        </div><!-- .option-group-accordion-wrap -->
+
+        <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $group_details);
+
+
+    }
+
+
+    public function field_option_group( $option ){
+
+        $id 			= isset( $option['id'] ) ? $option['id'] : "";
+        $css_id 			= isset( $option['css_id'] ) ? $option['css_id'] : $id;
+        $options 	= isset( $option['options'] ) ? $option['options'] : array();
+        $field_template 	= isset( $option['field_template'] ) ? $option['field_template'] : $this->field_template();
+
+        $is_pro 	= isset( $option['is_pro'] ) ? $option['is_pro'] : false;
+        $pro_text 	= isset( $option['pro_text'] ) ? $option['pro_text'] : '';
+
+
+        $title			= isset( $option['title'] ) ? $option['title'] : "";
+        $group_details 			= isset( $option['details'] ) ? $option['details'] : "";
+
+        if($is_pro == true){
+            $group_details = '<span class="pro-feature">'.$pro_text.'</span> '.$group_details;
+        }
+
+
+        ob_start();
+        ?>
+        <div id="<?php echo $css_id; ?>">
+            <?php
+
+            if(!empty($options)):
+                foreach ($options as $option):
+
+                    $id 		= isset( $option['id'] ) ? $option['id'] : "";
+                    $type 		= isset( $option['type'] ) ? $option['type'] : "";
+                    $details 	= isset( $option['details'] ) ? $option['details'] : "";
+
+                    if( isset($option['type']) && $option['type'] === 'select' ) 		        $this->field_select( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'select2')	        $this->field_select2( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'checkbox')	        $this->field_checkbox( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'radio')		        $this->field_radio( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'radio_image')	    $this->field_radio_image( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'textarea')	        $this->field_textarea( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'scripts_js')	        $this->field_scripts_js( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'scripts_css')	    $this->field_scripts_css( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'number' ) 	        $this->field_number( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'text' ) 		        $this->field_text( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'text_icon' )         $this->field_text_icon( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'text_multi' ) 	    $this->field_text_multi( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'range' ) 		    $this->field_range( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'colorpicker')        $this->field_colorpicker( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'colorpicker_multi')  $this->field_colorpicker_multi( $option );
+
+                    elseif( isset($option['type']) && $option['type'] === 'datepicker')	        $this->field_datepicker( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'faq')	            $this->field_faq( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'addons_grid')	    $this->field_addons_grid( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'custom_html')	    $this->field_custom_html( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'repeatable')	        $this->field_repeatable( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'media')	            $this->field_media( $option );
+                    elseif( isset($option['type']) && $option['type'] === 'media_url')	        $this->field_media_url( $option );
+
+                endforeach;
+            endif;
+            ?>
+        </div>
+        <?php
+
+        $input_html = ob_get_clean();
+
+        echo sprintf($field_template, $title, $input_html, $group_details);
+
+
+    }
 
 
     public function field_media( $option ){

@@ -1,6 +1,25 @@
 jQuery(document).ready(function($){
 
+    $( ".settings-tabs .accordion" ).accordion({
+        heightStyle:'content',
+        active: 99,
+        header: "> div > h3",
+        collapsible: true,
+    }).sortable({
+        axis: "y",
+        handle: "h3",
+        stop: function( event, ui ) {
+            // IE doesn't register the blur when sorting
+            // so trigger focusout handlers to remove .ui-state-focus
+            ui.item.children( "h3" ).triggerHandler( "focusout" );
 
+            // Refresh accordion to handle new order
+            $( this ).accordion( "refresh" );
+        }
+    });
+
+
+    ;
     $(".settings-tabs .sortable" ).sortable({ handle: ".sort" });
 
 	$(document).on('click','.settings-tabs .tab-nav',function(){

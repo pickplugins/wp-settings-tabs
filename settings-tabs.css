@@ -202,10 +202,19 @@
 .settings-tabs .setting-field .description{
     word-break: break-word;
 }
+.settings-tabs .setting-field .setting-field{
+    padding: 0 15px 15px 0px;
+}
+.settings-tabs .setting-field .setting-field .field-lable{
 
+    float: none;
+    font-size: 14px;
+    word-break: break-word;
+}
 
-
-
+.settings-tabs .setting-field .setting-field .field-input{
+    margin-left: 0px;
+}
 /*field-repeatable-wrapper*/
 
 
@@ -394,3 +403,35 @@
 .settings-tabs .field-input .CodeMirror{
     background: #f1f1f1;
 }
+
+
+/*.accordion*/
+
+.settings-tabs .accordion{}
+.settings-tabs .accordion .accordion-title{
+    padding: 10px;
+    background: #f1f1f1;
+    margin: 2px 0;
+    cursor: pointer;
+    font-weight: normal;
+    font-size: 14px;
+}
+.settings-tabs .accordion .accordion-content{
+    padding: 10px;
+    background: #f5f4f4a6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
