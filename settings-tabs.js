@@ -1,11 +1,16 @@
 jQuery(document).ready(function($){
 
-    $( ".settings-tabs .accordion" ).accordion({
+    $( ".settings-tabs-loading").fadeOut();
+    $( ".settings-tabs").fadeIn();
+
+    accordion = $( ".settings-tabs .accordion").accordion({
         heightStyle:'content',
         active: 99,
         header: "> div > h3",
         collapsible: true,
-    }).sortable({
+    });
+
+    $( ".settings-tabs .accordion[sortable='true']").sortable({
         axis: "y",
         handle: "h3",
         stop: function( event, ui ) {
@@ -16,10 +21,10 @@ jQuery(document).ready(function($){
             // Refresh accordion to handle new order
             $( this ).accordion( "refresh" );
         }
-    });
+    })
 
 
-    ;
+
     $(".settings-tabs .sortable" ).sortable({ handle: ".sort" });
 
 	$(document).on('click','.settings-tabs .tab-nav',function(){
