@@ -214,6 +214,43 @@
     word-break: break-word;
 }
 
+.settings-tabs .setting-field .setting-field{
+    padding: 0 15px 15px 0px;
+}
+.settings-tabs .setting-field .setting-field .field-lable{
+
+    float: none;
+}
+
+.settings-tabs .setting-field .setting-field .field-input{
+    margin-left: 0px;
+}
+
+
+.settings-tabs .expandable .setting-field{
+    padding: 0 15px 15px 0px;
+}
+.settings-tabs .expandable .setting-field .field-lable{
+    float: left;
+}
+
+.settings-tabs .expandable .setting-field .field-input{
+    margin-left: 270px;
+}
+
+
+.settings-tabs .expandable .setting-field{
+    padding: 0 15px 15px 0px;
+}
+.settings-tabs .expandable .setting-field .setting-field .field-lable{
+    float: none;
+}
+
+.settings-tabs .expandable .setting-field .setting-field .field-input{
+    margin-left: 0px;
+}
+
+
 /*field-repeatable-wrapper*/
 
 
@@ -407,6 +444,17 @@
     border-radius: 3px;
 }
 
+.settings-tabs .expandable .sort  {
+    background: rgba(87, 99, 117, 0.48) none repeat scroll 0 0;
+    color: rgb(255, 255, 255);
+    cursor: n-resize;
+    margin-right: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+}
+
+
+
 
 .settings-tabs .pro-feature{
     background: #ffd87f;
@@ -500,19 +548,11 @@
 
 
 
-    .settings-tabs .setting-field .setting-field{
-        padding: 0 15px 15px 0px;
-    }
-    .settings-tabs .setting-field .setting-field .field-lable{
 
-        float: none;
-        font-size: 14px;
-        word-break: break-word;
-    }
 
-    .settings-tabs .setting-field .setting-field .field-input{
-        margin-left: 0px;
-    }
+
+
+
 
 }
 
