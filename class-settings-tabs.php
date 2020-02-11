@@ -538,7 +538,7 @@ class settings_tabs_field{
         </script>
         <div id="input-wrapper-<?php echo $css_id; ?>" class=" input-wrapper field-repeatable-wrapper
             field-repeatable-wrapper-<?php echo $css_id; ?>">
-            <div class="add-repeat-field"><?php _e('Add','breadcrumb'); ?></div>
+            <div class="add-repeat-field"><i class="far fa-plus-square"></i> <?php _e('Add','breadcrumb'); ?></div>
             <div class="repeatable-field-list sortable" id="<?php echo $css_id; ?>">
                 <?php
                 if(!empty($values)):
