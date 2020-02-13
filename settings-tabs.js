@@ -107,13 +107,16 @@ jQuery(document).ready(function($){
             attachment = side_uploader.state().get('selection').first().toJSON();
 
             attachmentId = attachment.id;
+
             src_url = attachment.url;
+            src_filename = attachment.filename;
+
             //console.log(attachment);
 
             $(this_).prev().val(attachmentId);
 
             $(this_).parent().children('.media-preview-wrap').children('img').attr('src',src_url);
-
+            $(this_).parent().children().children('.media-title').html(src_filename);
         });
 
         //Open the uploader dialog
