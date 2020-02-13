@@ -126,6 +126,7 @@ class settings_tabs_field{
             <div sortable="<?php echo ($sortable) ? 'true':  'false'; ?>" class='option-group-accordion accordion'>
                 <?php
 
+                if(!empty($args_index))
                 foreach( $args_index as $index ):
 
                     //foreach( $args as $key => $value ):
@@ -322,18 +323,28 @@ class settings_tabs_field{
             <div class="media-preview-wrap" style="width: 150px;margin-bottom: 10px;background: #eee;padding: 5px;    text-align: center;">
                 <?php
 
+                //var_dump($media_type);
+
                 if( "audio/mpeg" == $media_type ){
                     ?>
                     <div class="media-preview" class="dashicons dashicons-format-audio" style="font-size: 70px;display: inline;"></div>
                     <div><?php echo $media_title; ?></div>
                     <?php
                 }
-                elseif( "images/png" == $media_type || "images/jpg" == $media_type || "images/jpeg" == $media_type ||
+                elseif( "images/png" == $media_type ||
+                    "image/png" == $media_type ||
                     "images/gif" == $media_type  ||
-                    "images/ico" == $media_type){
+                    "image/gif" == $media_type  ||
+                    "images/jpeg" == $media_type ||
+                    "image/jpeg" == $media_type ||
+                    "images/jpg" == $media_type ||
+                    "image/jpg" == $media_type ||
+                    "images/ico" == $media_type||
+                    "image/ico" == $media_type
+                ){
                     ?>
                     <img class="media-preview" src="<?php echo $media_url; ?>" style="width:100%"/>
-                    <div><?php echo $media_title; ?></div>
+                    <div class="media-title"><?php echo $media_title; ?></div>
                     <?php
                 }
 
@@ -345,8 +356,8 @@ class settings_tabs_field{
                 }
                 ?>
             </div>
-            <input type="hidden" name="<?php echo $field_name; ?>" id="media_input_<?php echo $css_id; ?>" value="<?php echo $value; ?>" />
-            <div class="media-upload button" id="media_upload_<?php echo $css_id; ?>"><?php echo __('Upload','breadcrumb');?></div>
+            <input class="media-input-value" type="hidden" name="<?php echo $field_name; ?>" id="media_input_<?php echo $css_id; ?>" value="<?php echo $value; ?>" />
+            <div class="media-upload button" id="media_upload_<?php echo $css_id; ?>"><?php echo __('Upload','team');?></div>
             <div class="clear button" id="media_clear_<?php echo $css_id; ?>"><?php echo __('Clear','breadcrumb');?></div>
             <div class="error-mgs"></div>
         </div>

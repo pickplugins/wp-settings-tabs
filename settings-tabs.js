@@ -74,7 +74,15 @@ jQuery(document).ready(function($){
     //     $("#media_preview_<?php echo $id; ?>").attr("src","");
     // })
 
+    $(document).on('click','.settings-tabs .field-media-wrapper .clear ',function(e){
 
+        $(this).parent().children().children('.media-preview').attr('src', '');
+        $(this).parent().children().children('.media-title').html('');
+        $(this).parent().children('.media-input-value').val('');
+
+
+
+    })
 
     $(document).on('click','.settings-tabs .field-media-wrapper .media-upload',function(e){
         var side_uploader;
