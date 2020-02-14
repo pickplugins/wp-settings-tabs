@@ -80,7 +80,8 @@ jQuery(document).ready(function($){
         $(this).parent().children().children('.media-title').html('');
         $(this).parent().children('.media-input-value').val('');
 
-
+        placeholder = $(this).attr('placeholder');
+        $(this).parent().children().children('.media-preview').attr('src', placeholder);
 
     })
 
