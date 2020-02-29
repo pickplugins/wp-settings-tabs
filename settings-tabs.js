@@ -219,7 +219,11 @@ jQuery(document).ready(function($){
 
 
 
+    jQuery(document).on("click", ".settings-tabs .select-reset", function() {
 
+        $(this).prev('select').val('');
+
+    })
 
 
 
