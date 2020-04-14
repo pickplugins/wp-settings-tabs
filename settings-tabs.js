@@ -10,7 +10,14 @@ jQuery(document).ready(function($){
         collapsible: true,
     });
 
-    $( ".settings-tabs [colorPicker]").wpColorPicker();
+
+
+
+        console.log(typeof(wpColorPicker));
+        if(typeof(wpColorPicker) != 'undefined'){
+            $( ".settings-tabs [colorPicker]").wpColorPicker();
+        }
+
 
 
     $( ".settings-tabs .accordion[sortable='true']").sortable({
