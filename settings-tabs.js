@@ -10,14 +10,7 @@ jQuery(document).ready(function($){
         collapsible: true,
     });
 
-
-
-
-        console.log(typeof(wpColorPicker));
-        if(typeof(wpColorPicker) != 'undefined'){
-            $( ".settings-tabs [colorPicker]").wpColorPicker();
-        }
-
+    $( ".settings-tabs [colorPicker]").wpColorPicker();
 
 
     $( ".settings-tabs .accordion[sortable='true']").sortable({
@@ -43,7 +36,7 @@ jQuery(document).ready(function($){
         editor_enabled = $(this).attr('editor_enabled');
 
 
-        console.log(typeof wp.editor);
+        //console.log(typeof wp.editor);
 
         if(editor_enabled == 'no' && typeof wp.editor != 'undefined'){
             wp.editor.initialize( id, {
@@ -242,6 +235,18 @@ jQuery(document).ready(function($){
         }else{
             jQuery(this).parent().parent().addClass("active");
         }
+    })
+
+    jQuery(document).on("click", ".settings-tabs .field-repeatable-wrapper .add-repeat-field", function() {
+        now = jQuery.now();
+        add_html = $(this).attr('add_html');
+
+        repeatable_html = add_html.replace(/TIMEINDEX/g, now);
+
+        $(this).parent().children('.repeatable-field-list').append(repeatable_html);
+
+        console.log('Hello');
+
     })
 
 

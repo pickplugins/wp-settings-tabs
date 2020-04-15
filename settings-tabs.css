@@ -259,13 +259,7 @@
 
 /*field-repeatable-wrapper*/
 
-.settings-tabs .field-media-wrapper .media-upload, .field-media-wrapper .clear {
-    display: inline-block;
-    background: #ddd;
-    padding: 2px 10px;
-    border-radius: 3px;
-    border: 1px solid #999;
-}
+
 .ppof-settings .repeatable .item-wrap{
     margin-bottom: 5px;
     padding-bottom: 0px;
