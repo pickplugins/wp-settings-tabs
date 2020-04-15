@@ -210,6 +210,7 @@ jQuery(document).ready(function($){
             jQuery(this).parent().parent().removeClass("active");
         }else{
             jQuery(this).parent().parent().addClass("active");
+            textarea_to_editor();
         }
     })
 
