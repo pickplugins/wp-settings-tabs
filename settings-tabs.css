@@ -234,7 +234,8 @@
 
 
 .settings-tabs .expandable .setting-field{
-    padding: 0 15px 15px 0px;
+    padding: 10px 0;
+    margin: 10px 0;
 }
 .settings-tabs .expandable .setting-field .field-lable{
     float: left;
@@ -244,10 +245,6 @@
     margin-left: 270px;
 }
 
-
-.settings-tabs .expandable .setting-field{
-    padding: 0 15px 15px 0px;
-}
 .settings-tabs .expandable .setting-field .setting-field .field-lable{
     float: none;
 }
@@ -391,32 +388,16 @@
 /*expandable*/
 
 
-.settings-tabs .expandable{}
+
 .settings-tabs .expandable .item {
-
     margin: 1px 0;
-
 }
-
-
-.settings-tabs .expandable .header label{
-
-}
-
-
 
 .settings-tabs .expandable .header {
     background: #eee none repeat scroll 0 0;
-
-}
-
-
-.settings-tabs .expandable {
-
 }
 
 .settings-tabs .expandable .options {
-    background: #bde6fc;
     display: none;
     padding: 10px;
 }
@@ -449,17 +430,8 @@
 
 }
 
-
-/*.settings-tabs .expandable .active .options {*/
-
-/*    display: block;*/
-
-/*}*/
-
 .settings-tabs .expandable  .options.active {
-
     display: block;
-
 }
 
 
