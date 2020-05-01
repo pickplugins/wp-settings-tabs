@@ -10,7 +10,15 @@ jQuery(document).ready(function($){
         collapsible: true,
     });
 
-    $( ".settings-tabs [colorPicker]").wpColorPicker();
+
+
+
+        //console.log(typeof(wpColorPicker));
+
+        //if(typeof(wpColorPicker) != 'undefined'){
+            $( ".settings-tabs [colorPicker]").wpColorPicker();
+        //}
+
 
 
     $( ".settings-tabs .accordion[sortable='true']").sortable({
@@ -30,6 +38,33 @@ jQuery(document).ready(function($){
 
     $(".settings-tabs .sortable" ).sortable({ handle: ".sort" });
 
+    $(document).on('click','.settings-tabs .textarea-editor',function(){
+
+        id = $(this).attr('id');
+        editor_enabled = $(this).attr('editor_enabled');
+
+
+        console.log(typeof wp.editor);
+
+        if(editor_enabled == 'no' && typeof wp.editor != 'undefined'){
+            wp.editor.initialize( id, {
+                mediaButtons: true,
+                tinymce: {
+                    wpautop: true,
+                    plugins : 'charmap colorpicker compat3x directionality fullscreen hr image lists media paste tabfocus textcolor wordpress wpautoresize wpdialogs wpeditimage wpemoji wpgallery wplink wptextpattern wpview',
+                    toolbar1: 'bold italic underline strikethrough | bullist numlist | blockquote hr wp_more | alignleft aligncenter alignright | link unlink | fullscreen | wp_adv',
+                    toolbar2: 'formatselect alignjustify forecolor | pastetext removeformat charmap | outdent indent | undo redo | wp_help'
+                },
+                quicktags:    true,
+            } );
+
+            $(this).attr('editor_enabled','yes');
+        }
+
+
+
+
+    })
 
 	$(document).on('click','.settings-tabs .tab-nav',function(){
 
@@ -210,83 +245,8 @@ jQuery(document).ready(function($){
             jQuery(this).parent().parent().removeClass("active");
         }else{
             jQuery(this).parent().parent().addClass("active");
-            textarea_to_editor();
         }
     })
-
-    jQuery(document).on("click", ".settings-tabs .field-repeatable-wrapper .add-repeat-field", function() {
-        now = jQuery.now();
-        add_html = $(this).attr('add_html');
-
-        repeatable_html = add_html.replace(/TIMEINDEX/g, now);
-
-        $(this).parent().children('.repeatable-field-list').append(repeatable_html);
-
-        textarea_to_editor();
-
-
-    })
-
-
-    function textarea_to_editor(){
-
-        //textarea = $('.textarea-editor');
-
-        var textarea = document.getElementsByClassName("textarea-editor");
-
-        for (i = 0; i < textarea.length; i++) {
-
-            el_id = textarea[i].id;
-            el_attr = textarea[i].getAttribute('editor_enabled');
-
-            //editor_enabled = $(this).attr('editor_enabled');
-
-
-            //console.log(typeof wp.editor);
-
-            if(el_attr == 'no' && typeof wp.editor != 'undefined'){
-                wp.editor.initialize( el_id, {
-                    mediaButtons: true,
-                    tinymce:      {
-                        toolbar1: 'bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo'
-                    },
-                    quicktags:    true,
-                } );
-
-                textarea[i].setAttribute('editor_enabled','yes')
-                //$(this).attr('editor_enabled','yes');
-            }
-
-
-
-        }
-
-    }
-
-    $(document).on('click','.settings-tabs .textarea-editor',function(){
-
-        id = $(this).attr('id');
-        editor_enabled = $(this).attr('editor_enabled');
-
-
-        //console.log(typeof wp.editor);
-
-        if(editor_enabled == 'no' && typeof wp.editor != 'undefined'){
-            wp.editor.initialize( id, {
-                mediaButtons: true,
-                tinymce:      {
-                    toolbar1: 'bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo'
-                },
-                quicktags:    true,
-            } );
-
-            $(this).attr('editor_enabled','yes');
-        }
-
-    })
-
-
-
 
 
 
@@ -318,13 +278,12 @@ jQuery(document).ready(function($){
 
 
     $(document).on('click', '.settings-tabs .expandable .expand', function(){
-        if($(this).parent().parent().hasClass('active'))
-        {
-            $(this).parent().parent().removeClass('active');
-        }
-        else
-        {
-            $(this).parent().parent().addClass('active');
+        if($(this).parent().parent().children('.options').hasClass('active')){
+            //$(this).parent().parent().removeClass('active');
+            $(this).parent().parent().children('.options').removeClass('active');
+        }else {
+            //$(this).parent().parent().addClass('active');
+            $(this).parent().parent().children('.options').addClass('active');
         }
 
 
