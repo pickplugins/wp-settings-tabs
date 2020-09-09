@@ -37,6 +37,7 @@ class settings_tabs_field{
         wp_enqueue_style( 'code-editor' );
 
         wp_enqueue_script( 'jquery.lazy' );
+        add_action( 'admin_enqueue_scripts', 'wp_enqueue_media' );
 
 
         wp_enqueue_editor();
