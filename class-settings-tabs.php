@@ -4,8 +4,10 @@ if ( ! defined('ABSPATH')) exit;  // if direct access
 if( ! class_exists( 'settings_tabs_field' ) ) {
 class settings_tabs_field{
 
+
 //    public $asset_dir_url = '';
     public $textdomain = 'settings-tabs';
+
 
     public function __construct(){
 
@@ -37,7 +39,6 @@ class settings_tabs_field{
         wp_enqueue_style( 'code-editor' );
 
         wp_enqueue_script( 'jquery.lazy' );
-        add_action( 'admin_enqueue_scripts', 'wp_enqueue_media' );
 
 
         wp_enqueue_editor();
@@ -571,7 +572,7 @@ class settings_tabs_field{
             </div>
             <input type="text" placeholder="<?php echo $placeholder; ?>" name="<?php echo $field_name; ?>" id="media_input_<?php echo $css_id; ?>" value="<?php echo $value; ?>" />
             <div class="media-upload button" id="media_upload_<?php echo $css_id; ?>"><?php echo __('Upload', $this->textdomain);?></div>
-            <div class="clear button" id="media_clear_<?php echo $css_id; ?>"><?php echo __('Clear','post-grid');?></div>
+            <div class="clear button" id="media_clear_<?php echo $css_id; ?>"><?php echo __('Clear', $this->textdomain);?></div>
             <div class="error-mgs"></div>
         </div>
 
@@ -672,7 +673,7 @@ class settings_tabs_field{
 
         <div id="input-wrapper-<?php echo $css_id; ?>" class=" input-wrapper field-repeatable-wrapper
             field-repeatable-wrapper-<?php echo $css_id; ?>">
-            <div add_html="<?php echo esc_attr($fieldHtml); ?>" class="add-repeat-field"><i class="far fa-plus-square"></i> <?php _e('Add','post-grid'); ?></div>
+            <div add_html="<?php echo esc_attr($fieldHtml); ?>" class="add-repeat-field"><i class="far fa-plus-square"></i> <?php echo __('Add', $this->textdomain); ?></div>
             <div class="repeatable-field-list sortable" id="<?php echo $css_id; ?>">
                 <?php
                 if(!empty($values)):
